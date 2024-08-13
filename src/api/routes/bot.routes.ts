@@ -21,7 +21,6 @@ export const zPmmSimpleInput = z.object({
   stop_loss: z.number(),
   take_profit: z.number(),
   time_limit: z.number(),
-  //TODO: What the heck is this?
   take_profit_order_type: z.number(),
   trailing_stop: z.object({
     activation_price: z.number(),
@@ -47,7 +46,53 @@ export const bot = {
       },
       strictStatusCodes: true,
       summary: 'Creates a new bot configuration',
-      description: 'Fuck it!',
+    },
+
+    listBots: {
+      method: 'GET',
+      path: '/bots',
+      responses: {
+        200: z.object({
+          data: z.record(
+            z.string(),
+            z.object({
+              status: z.string(),
+            }),
+          ),
+        }),
+      },
+      strictStatusCodes: true,
+      summary: 'Listing all bots',
+    },
+    startBot: {
+      method: 'POST',
+      path: '/bot/start',
+      body: z.object({
+        bot_name: z.string(),
+        log_level: z.string(),
+        script: z.string(),
+        conf: z.string(),
+        async_backend: z.boolean(),
+      }),
+      responses: {
+        200: z.null(),
+      },
+      strictStatusCodes: true,
+      summary: 'starting bot',
+    },
+    stopBot: {
+      method: 'POST',
+      path: '/bot/stop',
+      body: z.object({
+        bot_name: z.string(),
+        skip_order_cancellation: z.boolean(),
+        async_backend: z.boolean(),
+      }),
+      responses: {
+        200: z.null(),
+      },
+      strictStatusCodes: true,
+      summary: 'stopping bot',
     },
   }),
 };
