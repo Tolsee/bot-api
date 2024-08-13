@@ -92,7 +92,7 @@ const router = s.router(API, {
         const createBotResponse = await hummingbotClient.createBot({
           body: {
             instance_name: controllerName,
-            credentials_profile: 'neymar',
+            credentials_profile: 'master_account',
             image: 'hummingbot/hummingbot:latest',
             script: 'v2_with_controllers.py',
             script_config: controllerName + '.yml',
