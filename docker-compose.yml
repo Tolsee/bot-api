@@ -10,3 +10,5 @@ services:
       - './.env'
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
