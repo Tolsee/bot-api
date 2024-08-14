@@ -92,5 +92,19 @@ export const bot = {
       strictStatusCodes: true,
       summary: 'stopping bot',
     },
+    getBotConfig: {
+      method: 'GET',
+      path: '/bot/config/:botId',
+      pathParams: z.object({
+        botId: z.string(),
+      }),
+      responses: {
+        200: z.object({
+          trading_pair: z.string(),
+        }),
+      },
+      strictStatusCodes: true,
+      summary: 'stopping bot',
+    },
   }),
 };

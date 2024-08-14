@@ -5,6 +5,7 @@ import { createExpressEndpoints, initServer } from '@ts-rest/express';
 import bodyParser from 'body-parser';
 import express from 'express';
 import { randomUUID } from 'crypto';
+import cors from 'cors';
 import * as swaggerUi from 'swagger-ui-express';
 
 import { API } from './api/contract';
@@ -15,6 +16,7 @@ import { getUUID } from './lib/get-uuid';
 import { authMiddleware } from './api/middlewares/auth.middleware';
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
@@ -163,6 +165,24 @@ const router = s.router(API, {
         });
 
         logger.info({ message: 'response from stop bot: ', payload: response });
+
+        return {
+          status: 200,
+          body: response.body,
+        };
+      },
+    },
+    getBotConfig: {
+      middleware: [authMiddleware],
+      handler: async (req) => {
+        const { botId } = req.params;
+        const botUUID = getUUID(botId);
+        const response = await hummingbotClient.getBotConfig({
+          params: {
+            botId: botUUID,
+          },
+        });
+        logger.info({ message: 'bot configuration', payload: response.body });
 
         return {
           status: 200,

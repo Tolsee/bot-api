@@ -110,4 +110,18 @@ export const API = initContract().router({
     strictStatusCodes: true,
     summary: 'stop bot',
   },
+  getBotConfig: {
+    method: 'GET',
+    path: '/controller-config/:botId',
+    pathParams: z.object({
+      botId: z.string(),
+    }),
+    responses: {
+      200: z.object({
+        trading_pair: z.string(),
+      }),
+    },
+    strictStatusCodes: true,
+    summary: 'stop bot',
+  },
 });
