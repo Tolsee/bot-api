@@ -86,7 +86,9 @@ export const API = initContract().router({
       async_backend: z.boolean(),
     }),
     responses: {
-      200: z.null(),
+      200: z.object({
+        status: z.string(),
+      }),
     },
     strictStatusCodes: true,
     summary: 'start bot',
@@ -101,7 +103,9 @@ export const API = initContract().router({
       async_backend: z.boolean(),
     }),
     responses: {
-      200: z.null(),
+      200: z.object({
+        status: z.string(),
+      }),
     },
     strictStatusCodes: true,
     summary: 'stop bot',

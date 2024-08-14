@@ -146,7 +146,7 @@ const router = s.router(API, {
 
         return {
           status: 200,
-          body: null,
+          body: response.body,
         };
       },
     },
@@ -166,7 +166,7 @@ const router = s.router(API, {
 
         return {
           status: 200,
-          body: null,
+          body: response.body,
         };
       },
     },

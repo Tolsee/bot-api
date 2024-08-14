@@ -73,7 +73,9 @@ export const bot = {
       path: '/bot/start',
       body: zBotReq,
       responses: {
-        200: z.null(),
+        200: z.object({
+          status: z.string(),
+        }),
       },
       strictStatusCodes: true,
       summary: 'starting bot',
@@ -83,7 +85,9 @@ export const bot = {
       path: '/bot/stop',
       body: zBotReq,
       responses: {
-        200: z.null(),
+        200: z.object({
+          status: z.string(),
+        }),
       },
       strictStatusCodes: true,
       summary: 'stopping bot',
