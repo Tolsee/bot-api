@@ -12,6 +12,7 @@ import hummingbotClient from './hummingbot-api/client';
 import logger from './lib/logger';
 import { openApiDocument } from './lib/open-api';
 import { getUUID } from './lib/get-uuid';
+import { authMiddleware } from './api/middlewares/auth.middleware';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,7 +34,7 @@ const router = s.router(API, {
   },
   Bot: {
     createConfig: {
-      // middleware: [authMiddleware],
+      middleware: [authMiddleware],
       handler: async (req) => {
         const { trading_pair } = req.body;
         const controllerName = randomUUID();
@@ -110,6 +111,7 @@ const router = s.router(API, {
       },
     },
     listBots: {
+      middleware: [authMiddleware],
       handler: async () => {
         const response = await hummingbotClient.listBots();
         logger.info({ message: 'response from list bots', payload: response });
@@ -123,6 +125,7 @@ const router = s.router(API, {
       },
     },
     startBot: {
+      middleware: [authMiddleware],
       handler: async (req) => {
         const { bot_name } = req.body;
         const botUUID = getUUID(bot_name);
@@ -148,6 +151,7 @@ const router = s.router(API, {
       },
     },
     stopBot: {
+      middleware: [authMiddleware],
       handler: async (req) => {
         const { bot_name } = req.body;
         const response = await hummingbotClient.stopBot({
