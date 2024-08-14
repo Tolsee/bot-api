@@ -32,6 +32,10 @@ const zConfigReq = z.object({
   trading_pair: z.string(),
 });
 
+const zBotReq = z.object({
+  bot_name: z.string(),
+});
+
 export const bot = {
   routes: initContract().router({
     createConfig: {
@@ -67,13 +71,7 @@ export const bot = {
     startBot: {
       method: 'POST',
       path: '/bot/start',
-      body: z.object({
-        bot_name: z.string(),
-        log_level: z.string(),
-        script: z.string(),
-        conf: z.string(),
-        async_backend: z.boolean(),
-      }),
+      body: zBotReq,
       responses: {
         200: z.null(),
       },
@@ -83,11 +81,7 @@ export const bot = {
     stopBot: {
       method: 'POST',
       path: '/bot/stop',
-      body: z.object({
-        bot_name: z.string(),
-        skip_order_cancellation: z.boolean(),
-        async_backend: z.boolean(),
-      }),
+      body: zBotReq,
       responses: {
         200: z.null(),
       },

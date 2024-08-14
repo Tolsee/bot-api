@@ -11,6 +11,7 @@ import { API } from './api/contract';
 import hummingbotClient from './hummingbot-api/client';
 import logger from './lib/logger';
 import { openApiDocument } from './lib/open-api';
+import { getUUID } from './lib/get-uuid';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -34,8 +35,6 @@ const router = s.router(API, {
     createConfig: {
       // middleware: [authMiddleware],
       handler: async (req) => {
-        logger.info({ message: 'create config', payload: req.body });
-
         const { trading_pair } = req.body;
         const controllerName = randomUUID();
         const response = await hummingbotClient.addControllerConfig({
@@ -84,6 +83,7 @@ const router = s.router(API, {
             },
           },
         });
+
         logger.info({
           mesage: 'after create script response',
           payload: createScriptResponse,
@@ -123,17 +123,23 @@ const router = s.router(API, {
       },
     },
     startBot: {
-      handler: async () => {
+      handler: async (req) => {
+        const { bot_name } = req.body;
+        const botUUID = getUUID(bot_name);
         const response = await hummingbotClient.startBot({
           body: {
-            bot_name: 'hummingbot-708c8c48-7715-4df6-9039-8cd537f2c5c9',
+            bot_name: bot_name,
             log_level: '2',
             script: 'v2_with_controllers.py',
-            conf: '708c8c48-7715-4df6-9039-8cd537f2c5c9',
+            conf: botUUID + '.yml',
             async_backend: false,
           },
         });
-        logger.info({ message: 'response from start bots', payload: response });
+
+        logger.info({
+          message: 'response from start bot: ',
+          payload: response,
+        });
 
         return {
           status: 200,
@@ -142,15 +148,17 @@ const router = s.router(API, {
       },
     },
     stopBot: {
-      handler: async () => {
+      handler: async (req) => {
+        const { bot_name } = req.body;
         const response = await hummingbotClient.stopBot({
           body: {
-            bot_name: 'hummingbot-deb1cb2e-2f24-4d62-8902-4e262f9984ee',
+            bot_name: bot_name,
             skip_order_cancellation: false,
             async_backend: false,
           },
         });
-        logger.info({ message: 'response from stop bus', payload: response });
+
+        logger.info({ message: 'response from stop bot: ', payload: response });
 
         return {
           status: 200,

@@ -3,6 +3,7 @@ services:
     build:
       context: '.'
       dockerfile: './applications.Dockerfile'
+      network_mode: host
     volumes:
       - .:/app
     env_file:
