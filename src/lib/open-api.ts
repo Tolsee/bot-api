@@ -12,10 +12,12 @@ openApiDocument.components = {
   ...openApiDocument.components,
   securitySchemes: {
     sabinAuth: {
-      type: 'apiKey',
+      type: 'http',
       description: 'API key',
       name: 'authorization',
       in: 'header',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
     },
   },
 };

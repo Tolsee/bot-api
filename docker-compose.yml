@@ -1,0 +1,13 @@
+services:
+  server:
+    build:
+      context: '.'
+      dockerfile: './applications.Dockerfile'
+    volumes:
+      - .:/app
+    env_file:
+      - './.env'
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

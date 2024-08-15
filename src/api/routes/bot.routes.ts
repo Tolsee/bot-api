@@ -21,7 +21,6 @@ export const zPmmSimpleInput = z.object({
   stop_loss: z.number(),
   take_profit: z.number(),
   time_limit: z.number(),
-  //TODO: What the heck is this?
   take_profit_order_type: z.number(),
   trailing_stop: z.object({
     activation_price: z.number(),
@@ -31,6 +30,10 @@ export const zPmmSimpleInput = z.object({
 
 const zConfigReq = z.object({
   trading_pair: z.string(),
+});
+
+const zBotReq = z.object({
+  bot_name: z.string(),
 });
 
 export const bot = {
@@ -47,7 +50,61 @@ export const bot = {
       },
       strictStatusCodes: true,
       summary: 'Creates a new bot configuration',
-      description: 'Fuck it!',
+    },
+
+    listBots: {
+      method: 'GET',
+      path: '/bots',
+      responses: {
+        200: z.object({
+          data: z.record(
+            z.string(),
+            z.object({
+              status: z.string(),
+            }),
+          ),
+        }),
+      },
+      strictStatusCodes: true,
+      summary: 'Listing all bots',
+    },
+    startBot: {
+      method: 'POST',
+      path: '/bot/start',
+      body: zBotReq,
+      responses: {
+        200: z.object({
+          status: z.string(),
+        }),
+      },
+      strictStatusCodes: true,
+      summary: 'starting bot',
+    },
+    stopBot: {
+      method: 'POST',
+      path: '/bot/stop',
+      body: zBotReq,
+      responses: {
+        200: z.object({
+          status: z.string(),
+        }),
+      },
+      strictStatusCodes: true,
+      summary: 'stopping bot',
+    },
+    getBotConfig: {
+      method: 'GET',
+      path: '/bot/config/:botId',
+      pathParams: z.object({
+        botId: z.string(),
+      }),
+      responses: {
+        200: z.object({
+          trading_pair: z.string(),
+        }),
+      },
+      strictStatusCodes: true,
+      summary: 'stopping bot',
     },
   }),
 };
